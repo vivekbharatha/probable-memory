@@ -40,3 +40,15 @@ module.exports.validateLoginInput = ({ username, password }) => {
     valid: Object.keys(errors).length === 0,
   };
 };
+
+module.exports.validateBodyInput = ({ body }) => {
+  const errors = {};
+  if (body.trim() === '') {
+    errors.body = 'body must no be empty';
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0,
+  };
+};

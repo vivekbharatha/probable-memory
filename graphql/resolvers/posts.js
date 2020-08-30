@@ -1,7 +1,9 @@
-const Post = require('../../models/Post');
+const { AuthenticationError, UserInputError } = require('apollo-server');
 
+const Post = require('../../models/Post');
 const checkAuth = require('../../util/checkAuth');
-const { AuthenticationError } = require('apollo-server');
+const { update } = require('../../models/Post');
+const { validateBodyInput } = require('../../util/validators');
 
 module.exports = {
   Query: {
@@ -58,10 +60,75 @@ module.exports = {
       } catch (error) {
         throw new Error(error);
       }
+    },
+    async createComment(_, { postId, body }, context) {
+      const { username } = checkAuth(context);
 
-      console.log(newPost);
+      const { valid, errors } = validateBodyInput({ body });
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
 
-      const post = await newPost.save();
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        throw new UserInputError('Invalid postId');
+      }
+
+      post.comments.unshift({
+        body,
+        username,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+      await post.save();
+      return post;
+    },
+    async deleteComment(_, { postId, commentId }, context) {
+      const { username } = checkAuth(context);
+
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        throw new UserInputError('Invalid postId');
+      }
+
+      const commentIndex = post.comments.findIndex((c) => c.id === commentId);
+
+      if (commentIndex === -1) {
+        throw new UserInputError('Invalid commentId');
+      }
+
+      if (post.comments[commentIndex].username !== username) {
+        throw new AuthenticationError('Not allowed');
+      }
+
+      post.comments.splice(commentIndex, 1);
+      await post.save();
+      return post;
+    },
+    async likePost(_, { postId }, context) {
+      const { username } = checkAuth(context);
+
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        throw new UserInputError('Invalid postId');
+      }
+
+      const likeIndex = post.likes.findIndex((l) => l.username === username);
+
+      if (likeIndex === -1) {
+        post.likes.push({
+          username,
+          createdAt: new Date(),
+        });
+      } else {
+        post.likes = post.likes.filter((l) => l.username !== username);
+      }
+
+      await post.save();
       return post;
     },
   },
