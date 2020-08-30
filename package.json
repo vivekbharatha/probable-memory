@@ -20,7 +20,9 @@
   "homepage": "https://github.com/vivekbharatha/probable-memory#readme",
   "dependencies": {
     "apollo-server": "^2.17.0",
+    "bcryptjs": "^2.4.3",
     "graphql": "^15.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.2"
   },
   "devDependencies": {

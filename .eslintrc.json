@@ -4,6 +4,9 @@
   "rules": {
     "prettier/prettier": ["error"],
     "no-console": 0,
-    "import/no-extraneous-dependencies": 0
+    "import/no-extraneous-dependencies": 0,
+    "no-unused-vars": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": "off"
   }
 }
