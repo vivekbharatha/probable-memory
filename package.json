@@ -1,0 +1,27 @@
+{
+  "name": "probable-memory",
+  "version": "1.0.0",
+  "description": "A MERNG Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivekbharatha/probable-memory.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivekbharatha/probable-memory/issues"
+  },
+  "homepage": "https://github.com/vivekbharatha/probable-memory#readme",
+  "dependencies": {
+    "apollo-server": "^2.17.0",
+    "graphql": "^15.3.0",
+    "mongoose": "^5.10.2",
+    "nodemon": "^2.0.4"
+  }
+}
