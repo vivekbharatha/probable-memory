@@ -1,17 +1,34 @@
-const { ApolloServer } = require("apollo-server");
-const gql = require("graphql-tag");
-const mongoose = require("mongoose");
-const config = require("./config");
+const { ApolloServer } = require('apollo-server');
+const gql = require('graphql-tag');
+const mongoose = require('mongoose');
+
+const Post = require('./models/Post');
+const config = require('./config');
 
 const typeDefs = gql`
+  type Post {
+    id: ID!
+    body: String!
+    createdAt: String!
+    updatedAt: String!
+    username: String!
+  }
+
   type Query {
-    sayHi: String!
+    getPosts: [Post]
   }
 `;
 
 const resolvers = {
   Query: {
-    sayHi: () => "Hello Vivek!",
+    async getPosts() {
+      try {
+        const posts = await Post.find();
+        return posts;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
 };
 
@@ -26,7 +43,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Database connected, starting server...");
+    console.log('Database connected, starting server...');
     return server.listen({ port: process.env.PORT || 5000 });
   })
   .then((res) => {
