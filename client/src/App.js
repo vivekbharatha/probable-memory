@@ -19,7 +19,6 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <h1>Probable Memory</h1>
       </Container>
     </Router>
   );
