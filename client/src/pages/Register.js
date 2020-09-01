@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { useMutation } from '@apollo/react-hooks';
-
 import gql from 'graphql-tag';
+
+import { useForm } from '../utils/hooks';
 
 export default function Register(props) {
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
 
-  function onChange(event) {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  }
-
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, result) {
       props.history.push('/');
     },
     onError(error) {
-      console.log(error.graphQLErrors);
       setErrors(error.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
   });
 
-  function onSubmit(event) {
-    event.preventDefault();
+  function registerUser() {
     addUser();
   }
 
@@ -40,46 +32,42 @@ export default function Register(props) {
     <div className="register-wrapper">
       <h1>Register</h1>
       <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-        <Form.Field>
-          <label>Username</label>
-          <input
-            placeholder="Username"
-            name="username"
-            value={values.username}
-            onChange={onChange}
-            type="text"
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Email</label>
-          <input
-            placeholder="Email"
-            name="email"
-            value={values.email}
-            onChange={onChange}
-            type="email"
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Password</label>
-          <input
-            placeholder="Password"
-            name="password"
-            value={values.password}
-            onChange={onChange}
-            type="password"
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>Password</label>
-          <input
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            value={values.confirmPassword}
-            onChange={onChange}
-            type="password"
-          />
-        </Form.Field>
+        <Form.Input
+          label="Username"
+          placeholder="Username"
+          name="username"
+          value={values.username}
+          onChange={onChange}
+          type="text"
+          error={!!errors.username}
+        />
+        <Form.Input
+          label="Email"
+          placeholder="Email"
+          name="email"
+          value={values.email}
+          onChange={onChange}
+          type="email"
+          error={!!errors.email}
+        />
+        <Form.Input
+          label="Passord"
+          placeholder="Password"
+          name="password"
+          value={values.password}
+          onChange={onChange}
+          type="password"
+          error={!!errors.password}
+        />
+        <Form.Input
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          name="confirmPassword"
+          value={values.confirmPassword}
+          onChange={onChange}
+          type="password"
+          error={!!errors.confirmPassword}
+        />
         <Button type="submit" primary>
           Register
         </Button>
