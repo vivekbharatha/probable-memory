@@ -51,7 +51,7 @@ export default function Register(props) {
           error={!!errors.email}
         />
         <Form.Input
-          label="Passord"
+          label="Password"
           placeholder="Password"
           name="password"
           value={values.password}
