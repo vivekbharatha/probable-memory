@@ -4,3 +4,13 @@
   font-size: 2rem;
   margin-top: 10px;
 }
+
+.posts-wrapper {
+  width: 60vw;
+  margin: auto !important;
+}
+
+.register-wrapper {
+  width: 40vw;
+  margin: auto !important;
+}

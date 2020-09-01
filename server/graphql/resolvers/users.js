@@ -14,7 +14,7 @@ module.exports = {
         password,
       });
       if (!valid) {
-        throw new UserInputError('Errors', errors);
+        throw new UserInputError('Errors', { errors });
       }
 
       const user = await User.findOne({ username });
@@ -60,7 +60,7 @@ module.exports = {
         confirmPassword,
       });
       if (!valid) {
-        throw new UserInputError('Errors', errors);
+        throw new UserInputError('Errors', { errors });
       }
 
       const existsUser = await User.findOne({ username });

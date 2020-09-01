@@ -33,7 +33,7 @@ export default function Home() {
 
   const posts = data ? data.getPosts : [];
   return (
-    <Grid columns={3}>
+    <Grid columns={1} className="posts-wrapper">
       <Grid.Row className="page-title">
         <h1>Recent Posts</h1>
       </Grid.Row>
