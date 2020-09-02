@@ -22,8 +22,8 @@ export default function Login(props) {
       context.login(userData);
       props.history.push('/');
     },
-    onError(error) {
-      setErrors(error.graphQLErrors[0].extensions.exception.errors);
+    onError(err) {
+      setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
   });
