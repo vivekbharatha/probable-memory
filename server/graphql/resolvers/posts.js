@@ -32,6 +32,10 @@ module.exports = {
     async createPost(_, { body }, context) {
       const user = checkAuth(context);
 
+      if (!body) {
+        throw new AuthenticationError('Invalid body');
+      }
+
       const newPost = new Post({
         body,
         username: user.username,
