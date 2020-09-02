@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Card, Icon, Label, Image, Button } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import { AuthContext } from '../context/auth';
+import LikeButton from './LikeButton';
+
 export default function PostCard({
   post: { id, body, createdAt, username, likesCount, commentsCount, likes },
 }) {
-  function onLikePost() {}
+  const { user } = useContext(AuthContext);
 
-  function onCommentPost() {}
+  function onLikePost() {}
 
   return (
     <Card fluid>
       <Card.Content>
-        <Image
-          floated="right"
-          size="mini"
-          src="https://react.semantic-ui.com/images/avatar/large/steve.jpg"
-        />
+        <Image floated="left" size="mini" src="https://picsum.photos/200" />
+        {user && user.username === username && (
+          <Icon
+            name="trash"
+            floated="right"
+            color="red"
+            style={{ margin: 0, display: 'block', float: 'right', cursor: 'pointer' }}
+            onClick={() => console.log('clocled')}
+          />
+        )}
         <Card.Header>{username}</Card.Header>
         <Card.Meta as={Link} to={`/posts/${id}`}>
           {moment(Number(createdAt)).fromNow()}
@@ -26,15 +34,8 @@ export default function PostCard({
         <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button as="div" labelPosition="right" onClick={onLikePost}>
-          <Button color="blue" basic>
-            <Icon name="heart" />
-          </Button>
-          <Label as="a" basic color="blue" pointing="left">
-            {likesCount}
-          </Label>
-        </Button>
-        <Button as="div" floated="right" labelPosition="right" onClick={onCommentPost}>
+        <LikeButton user={user} post={{ id, likes, likesCount }}></LikeButton>
+        <Button as="div" floated="right" labelPosition="right" as={Link} to={`/posts/${id}`}>
           <Button color="blue" basic>
             <Icon name="comments" />
           </Button>
