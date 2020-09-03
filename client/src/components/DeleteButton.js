@@ -4,22 +4,26 @@ import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { FETCH_POSTS_QUERY } from '../utils/graphql';
 
-export default function DeleteButton({ postId, onDeleted }) {
+export default function DeleteButton({ postId, commentId, onDeleted }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const mutation = commentId ? DELETE_COMMENT_MUTATION : DELETE_POST_MUTATION;
 
-  const [onDeletePost] = useMutation(DELETE_POST_MUTATION, {
-    variables: { postId },
+  const [onDeletePostOrComment] = useMutation(mutation, {
+    variables: { postId, commentId },
     update(proxy) {
       setConfirmOpen(false);
 
-      const data = proxy.readQuery({
-        query: FETCH_POSTS_QUERY,
-      });
-      proxy.writeQuery({
-        query: FETCH_POSTS_QUERY,
-        data: { getPosts: data.getPosts.filter((p) => p.id !== postId) },
-      });
-      if (onDeleted) onDeleted();
+      if (!commentId) {
+        const data = proxy.readQuery({
+          query: FETCH_POSTS_QUERY,
+        });
+        proxy.writeQuery({
+          query: FETCH_POSTS_QUERY,
+          data: { getPosts: data.getPosts.filter((p) => p.id !== postId) },
+        });
+        if (onDeleted) onDeleted();
+      } else {
+      }
     },
     onError(err) {},
   });
@@ -35,7 +39,7 @@ export default function DeleteButton({ postId, onDeleted }) {
       />
       <Confirm
         open={confirmOpen}
-        onConfirm={onDeletePost}
+        onConfirm={onDeletePostOrComment}
         onCancel={() => {
           setConfirmOpen(false);
         }}
@@ -47,5 +51,20 @@ export default function DeleteButton({ postId, onDeleted }) {
 const DELETE_POST_MUTATION = gql`
   mutation deletePost($postId: ID!) {
     deletePost(postId: $postId)
+  }
+`;
+
+const DELETE_COMMENT_MUTATION = gql`
+  mutation deleteComment($postId: ID!, $commentId: ID!) {
+    deleteComment(postId: $postId, commentId: $commentId) {
+      id
+      comments {
+        id
+        body
+        username
+        createdAt
+      }
+      commentsCount
+    }
   }
 `;
