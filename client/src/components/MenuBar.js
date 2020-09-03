@@ -14,7 +14,7 @@ export default function MenuBar() {
 
   const menuBar = user ? (
     <Menu pointing secondary size="massive" color="blue">
-      <Menu.Item name={user.username} active />
+      <Menu.Item name={user.username} active as={Link} to="/" />
       <Menu.Menu position="right">
         <Menu.Item name="logout" onClick={logout} as={Link} to="/" />
       </Menu.Menu>

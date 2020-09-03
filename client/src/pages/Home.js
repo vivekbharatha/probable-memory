@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { useQuery } from '@apollo/react-hooks';
 
-import { Grid } from 'semantic-ui-react';
+import { Grid, Transition } from 'semantic-ui-react';
 import PostCard from '../components/PostCard';
 import { AuthContext } from '../context/auth';
 import PostForm from '../components/PostForm';
@@ -30,14 +30,16 @@ export default function Home() {
         {loading ? (
           <h2>Loading posts...</h2>
         ) : (
-          posts &&
-          posts.map((post) => {
-            return (
-              <Grid.Column key={post.id} style={{ marginBottom: 30 }}>
-                <PostCard post={post} />
-              </Grid.Column>
-            );
-          })
+          <Transition.Group>
+            {posts &&
+              posts.map((post) => {
+                return (
+                  <Grid.Column key={post.id} style={{ marginBottom: 30 }}>
+                    <PostCard post={post} />
+                  </Grid.Column>
+                );
+              })}
+          </Transition.Group>
         )}
       </Grid.Row>
     </Grid>

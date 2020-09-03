@@ -4,9 +4,10 @@ import * as serviceWorker from './serviceWorker';
 import ApolloProvider from './ApolloProvider';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider />
-  </React.StrictMode>,
+  // Temp fix (not suggestable)
+  // <React.StrictMode>
+  <ApolloProvider />,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
