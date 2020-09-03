@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "serve": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docker-build": "docker build -t probable-memory/server:latest .",
+    "docker-build-prod": "docker build -f Dockerfile.prod -t probable-memory/server:prod ."
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,14 @@
   "homepage": "https://github.com/vivekbharatha/probable-memory#readme",
   "dependencies": {
     "apollo-server": "^2.17.0",
+    "apollo-server-express": "^2.17.0",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.2"
+    "mongoose": "^5.10.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
