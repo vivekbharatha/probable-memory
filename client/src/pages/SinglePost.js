@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from 'react';
 import gql from 'graphql-tag';
 import moment from 'moment';
-import { Grid, Image, Card, Button, Icon, Label, Form } from 'semantic-ui-react';
+import { Grid, Image, Card, Button, Icon, Label, Form, Transition } from 'semantic-ui-react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { AuthContext } from '../context/auth';
@@ -85,40 +85,47 @@ export default function SinglePost(props) {
                 <Card.Content>
                   <p>Post a comment</p>
                   <Form>
-                    <div className="ui action input field">
-                      <input
-                        type="text"
-                        placeholder="comment...."
-                        name="comment"
-                        value={comment}
-                        onChange={(event) => setComment(event.target.value)}
-                        ref={commentInputRef}
-                      ></input>
-                      <button
-                        type="submit"
-                        className="ui button blue"
-                        disabled={comment.trim() === ''}
-                        onClick={submitComment}
+                    <div className="fields">
+                      <div
+                        className="ui action input field fourteen wide"
+                        style={{ width: 'auto' }}
                       >
-                        Submit
-                      </button>
+                        <input
+                          type="text"
+                          placeholder="comment...."
+                          name="comment"
+                          value={comment}
+                          onChange={(event) => setComment(event.target.value)}
+                          ref={commentInputRef}
+                        ></input>
+                        <button
+                          type="submit"
+                          className="ui button blue"
+                          disabled={comment.trim() === ''}
+                          onClick={submitComment}
+                        >
+                          Submit
+                        </button>
+                      </div>
                     </div>
                   </Form>
                 </Card.Content>
               </Card>
             )}
-            {comments.map((comment) => (
-              <Card fluid key={comment.id}>
-                <Card.Content>
-                  {user && user.username === comment.username && (
-                    <DeleteButton postId={id} commentId={comment.id} onDeleted={onDeleted} />
-                  )}
-                  <Card.Header>{comment.username}</Card.Header>
-                  <Card.Meta>{moment(Number(comment.createdAt)).fromNow()}</Card.Meta>
-                  <Card.Description>{comment.body}</Card.Description>
-                </Card.Content>
-              </Card>
-            ))}
+            <Transition.Group>
+              {comments.map((comment) => (
+                <Card fluid key={comment.id}>
+                  <Card.Content>
+                    {user && user.username === comment.username && (
+                      <DeleteButton postId={id} commentId={comment.id} onDeleted={onDeleted} />
+                    )}
+                    <Card.Header>{comment.username}</Card.Header>
+                    <Card.Meta>{moment(Number(comment.createdAt)).fromNow()}</Card.Meta>
+                    <Card.Description>{comment.body}</Card.Description>
+                  </Card.Content>
+                </Card>
+              ))}
+            </Transition.Group>
           </Grid.Column>
         </Grid.Row>
       </Grid>
