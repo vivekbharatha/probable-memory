@@ -27,7 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "docker-build": "docker build -t probable-memory-client:latest ."
+    "docker-build": "docker build -t probable-memory/client:latest .",
+    "docker-build-prod": "docker build -f Dockerfile.prod -t probable-memory/client:prod ."
   },
   "eslintConfig": {
     "extends": "react-app"

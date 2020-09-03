@@ -7,4 +7,4 @@ docker run \
     -v /app/node_modules \
     -p 3000:3000 \
     -e CHOKIDAR_USEPOLLING=true \
-    probable-memory-client:latest
+    probable-memory/client:latest
